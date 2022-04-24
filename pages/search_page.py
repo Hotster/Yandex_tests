@@ -5,7 +5,9 @@ from resources.locators import SearchPageLocators
 class SearchPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
-        self.driver.get(self.URL)
+
+    def go_to_yandex(self, url):
+        self.driver.get(url)
 
     def search(self, text):
         self.enter_text(SearchPageLocators.search_field, text)
@@ -16,5 +18,13 @@ class SearchPage(BasePage):
     def search_field_displayed(self):
         return self.is_displayed(SearchPageLocators.search_field)
 
-    def displayed_field_existence(self):
+    def suggest_field_displayed(self):
         return self.is_displayed(SearchPageLocators.suggest_field)
+
+    def images_link_displayed(self):
+        return self.is_displayed(SearchPageLocators.images_link)
+
+    def images_click(self):
+        self.click(SearchPageLocators.images_link)
+        images_window = self.driver.window_handles[1]
+        self.driver.switch_to.window(images_window)

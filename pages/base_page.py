@@ -3,16 +3,16 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
 
 
 class BasePage:
-    URL = "https://yandex.ru"
 
     def __init__(self, driver: WebDriver):
         self.driver = driver
 
     def click(self, by_locator):
-        WebDriverWait(self.driver, 10).until(ec.visibility_of_element_located(by_locator)).click()
+        WebDriverWait(self.driver, 3).until(ec.visibility_of_element_located(by_locator)).click()
 
     def press_enter_button(self, by_locator):
         WebDriverWait(self.driver, 10).until(ec.visibility_of_element_located(by_locator)).send_keys(Keys.ENTER)
@@ -21,7 +21,10 @@ class BasePage:
         WebDriverWait(self.driver, 10).until(ec.visibility_of_element_located(by_locator)).send_keys(text)
 
     def is_displayed(self, by_locator):
-        return WebDriverWait(self.driver, 10).until(ec.visibility_of_element_located(by_locator))
+        try:
+            WebDriverWait(self.driver, 10).until(ec.visibility_of_element_located(by_locator))
+        except TimeoutException:
+            raise NoSuchElementException('No such element on page.')
 
     def displayed_in_results(self, by_locator, by_locator2, results_amount=None):
         links = []
@@ -33,9 +36,9 @@ class BasePage:
                 link = results[result].find_element(*by_locator2)
                 if link is not None:
                     links.append(link.get_attribute('href'))
-            except NoSuchElementException:
+            except Exception:
                 pass
-        if links:
-            return True
-        else:
-            return False
+        assert len(links) > 0, 'No such element on page.'
+
+    def url_check(self, url):
+        assert url in self.driver.current_url, f"Link doesn't match the expected link."
