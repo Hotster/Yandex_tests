@@ -1,7 +1,9 @@
 import pytest
+
 from pages.search_page import SearchPage
 from pages.images_main_page import ImagesMainPage
 from pages.images_result_page import ImagesResultPage
+from resources.locators import ImagesResultPageLocators
 
 
 @pytest.mark.usefixtures('driver')
@@ -18,4 +20,7 @@ class TestYandexImages:
         images_main_page.images_url()
         category_text = images_main_page.open_category()
         images_result_page.category_text_check(category_text)
-
+        image_1 = images_result_page.open_image()
+        images_result_page.next_image()
+        image_2 = images_result_page.prev_image()
+        images_result_page.compare_images(image_1, image_2)

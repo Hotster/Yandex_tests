@@ -25,5 +25,15 @@ class ImagesMainPageLocators:
 
 
 class ImagesResultPageLocators:
-    text = (By.CSS_SELECTOR,
-                     ".serp-header__search2")
+    input_field = (By.CLASS_NAME,
+                     "mini-suggest__input")
+    image = (By.CLASS_NAME,
+             'serp-item_pos_0')
+    next_button = (By.CLASS_NAME,
+             'CircleButton_type_next')
+    back_button = (By.CLASS_NAME,
+             'CircleButton_type_prev')
+    main_image = (By.CLASS_NAME,
+                  'MMImage-Origin')
+    main_container = (By.CLASS_NAME,
+                  'MMImageContainer')
