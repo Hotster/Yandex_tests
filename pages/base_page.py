@@ -2,8 +2,6 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
 
 
@@ -28,10 +26,7 @@ class BasePage:
         WebDriverWait(self.driver, 10).until(ec.visibility_of_element_located(by_locator)).send_keys(text)
 
     def is_displayed(self, by_locator):
-        try:
-            WebDriverWait(self.driver, 10).until(ec.visibility_of_element_located(by_locator))
-        except TimeoutException:
-            raise NoSuchElementException('No such element on page.')
+        WebDriverWait(self.driver, 10).until(ec.visibility_of_element_located(by_locator))
 
     def displayed_in_results(self, by_locator, by_locator2, results_amount=None):
         links = []
@@ -48,4 +43,4 @@ class BasePage:
         assert len(links) > 0, 'No such element on page.'
 
     def url_check(self, url):
-        assert url in self.driver.current_url, f"Link doesn't match the expected link."
+        assert url in self.driver.current_url, f"URL doesn't match the expected link."

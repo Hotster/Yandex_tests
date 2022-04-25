@@ -8,4 +8,4 @@ class ResultPage(BasePage):
         super().__init__(driver)
 
     def displayed_in_5_results(self):
-        return self.displayed_in_results(SearchPageLocators.search_result, ResultPageLocators.link, 5)
+        return self.displayed_in_results(SearchPageLocators.search_result, ResultPageLocators.expected_link, 5)
